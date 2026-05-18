@@ -1,0 +1,10 @@
+{
+  "name": "EpicLootAlphaTest",
+  "version_number": "0.1.0",
+  "website_url": "",
+  "description": "Testing EpicLoot features",
+  "dependencies": [
+    "denikson-BepInExPack_Valheim-5.4.2333",
+    "RandyKnapp-EpicLoot-0.12.15"
+  ]
+}

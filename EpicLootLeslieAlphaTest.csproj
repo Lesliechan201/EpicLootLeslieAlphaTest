@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+    <Import Project="environment.props" Condition="Exists('environment.props')" />
+
+    <PropertyGroup>
+        <OutputType>Library</OutputType>
+        <TargetFramework>net481</TargetFramework>
+        <RootNamespace>EpicLootLeslieAlphaTest</RootNamespace>
+        <AssemblyName>EpicLootLeslieAlphaTest</AssemblyName>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Version>1.0.0</Version>
+        <FileAlignment>512</FileAlignment>
+        <Deterministic>true</Deterministic>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <Optimize>false</Optimize>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <Optimize>true</Optimize>
+        <DebugType>pdbonly</DebugType>
+        <WarningLevel>4</WarningLevel>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="ILRepack.Lib.MSBuild.Task" Version="2.0.45">
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="JotunnLib" Version="2.27.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Libs\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="EpicLoot">
+        <HintPath>Libs\EpicLoot.dll</HintPath>
+		  <Private>false</Private>
+      </Reference>
+      <Reference Include="EpicLoot-UnityLib">
+        <HintPath>Libs\EpicLoot-UnityLib.dll</HintPath>
+      </Reference>
+      <Reference Include="EpicLootAPI">
+        <HintPath>Libs\EpicLootAPI.dll</HintPath>
+		  <Private>true</Private>
+      </Reference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <VALHEIM_INSTALL Condition="'$(VALHEIM_INSTALL)' == ''">C:\Program Files (x86)\Steam\steamapps\common\Valheim</VALHEIM_INSTALL>
+        <BEPINEX_PATH Condition="'$(BEPINEX_PATH)' == ''">$(VALHEIM_INSTALL)\BepInEx</BEPINEX_PATH>
+        <MOD_DEPLOYPATH Condition="'$(MOD_DEPLOYPATH)' == ''">C:\Users\LC\AppData\Roaming\r2modmanPlus-local\Valheim\profiles\testa\BepInEx\plugins</MOD_DEPLOYPATH>
+    </PropertyGroup>
+
+    <!-- Post-build: copy DLL to BepInEx plugins folder -->
+    <Target Name="CopyToPlugins" AfterTargets="ILRepacker">
+        <Copy Condition="Exists('$(MOD_DEPLOYPATH)')" SourceFiles="$(TargetDir)$(TargetFileName)" DestinationFolder="$(MOD_DEPLOYPATH)" OverwriteReadOnlyFiles="true" />
+        <Message Condition="Exists('$(MOD_DEPLOYPATH)')" Text="Copied $(TargetFileName) to $(MOD_DEPLOYPATH)" Importance="high" />
+    </Target>
+</Project>
